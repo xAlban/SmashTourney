@@ -23,6 +23,10 @@ import {
   useNavigationPersistence,
 } from "./navigation"
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
+import { ApolloClient } from 'apollo-client'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import { HttpLink } from 'apollo-link-http'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
@@ -48,7 +52,7 @@ const App: Component<{}> = () => {
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       setupRootStore().then(setRootStore)
     })()
   }, [])
@@ -59,16 +63,26 @@ const App: Component<{}> = () => {
   // with your own loading component if you wish.
   if (!rootStore) return null
 
+  // Create the client as outlined in the setup guide
+  const client = new ApolloClient({
+    link: new HttpLink('https://api.smash.gg/gql/alpha'),
+    cache: new InMemoryCache(),
+  })
+
   // otherwise, we're ready to render the app
   return (
     <RootStoreProvider value={rootStore}>
-      <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
-        <RootNavigator
-          ref={navigationRef}
-          initialState={initialNavigationState}
-          onStateChange={onNavigationStateChange}
-        />
-      </SafeAreaProvider>
+      <ApolloProvider client={client}>
+        <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
+
+          <RootNavigator
+            ref={navigationRef}
+            initialState={initialNavigationState}
+            onStateChange={onNavigationStateChange}
+          />
+
+        </SafeAreaProvider>
+      </ApolloProvider>
     </RootStoreProvider>
   )
 }
