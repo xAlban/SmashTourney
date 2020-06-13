@@ -32,6 +32,7 @@ import { HttpLink } from 'apollo-link-http'
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 import { enableScreens } from "react-native-screens"
+import { ApolloLink } from "apollo-boost"
 enableScreens()
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
@@ -65,7 +66,18 @@ const App: Component<{}> = () => {
 
   // Create the client as outlined in the setup guide
   const client = new ApolloClient({
-    link: new HttpLink('https://api.smash.gg/gql/alpha'),
+    link: new ApolloLink((operation, forward) => {
+      operation.setContext({
+        headers: {
+          authorization: 'Bearer ' + 'ef5e2a952f65837e693fe2fe217a252d',
+        }
+      })
+      return forward(operation)
+    }).concat(
+      new HttpLink({
+        uri: 'https://api.smash.gg/gql/alpha', // Server URL
+      })
+    ),
     cache: new InMemoryCache(),
   })
 

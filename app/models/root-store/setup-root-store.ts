@@ -43,6 +43,8 @@ export async function setupRootStore() {
     __DEV__ && console.tron.error(e.message, null)
   }
 
+  rootStore.tournamentsStore.resetTournaments()
+
   // reactotron logging
   if (__DEV__) {
     env.reactotron.setRootStore(rootStore, data)
