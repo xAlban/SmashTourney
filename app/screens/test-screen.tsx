@@ -11,7 +11,8 @@ import { useStores } from "../models"
 import { getTournamentByNameAndCountry } from "../services/graphQL"
 
 const ROOT: ViewStyle = {
-  backgroundColor: color.palette.white,
+  backgroundColor: 'white',
+  minHeight: '100%'
 }
 
 export const TestScreen: Component = observer(function TestScreen() {
@@ -20,10 +21,16 @@ export const TestScreen: Component = observer(function TestScreen() {
 
   const [tournaments, setTournaments] = React.useState<any[]>([])
 
+  function handleTournamentQuery(result: any[]) {
+    tournamentsStore.updateTournaments(result[1])
+    console.log('updated tournaments store and return components')
+    return result[0]
+  }
+
   return (
     <Screen style={ROOT} preset="scroll">
       {
-        getTournamentByNameAndCountry()
+        handleTournamentQuery(getTournamentByNameAndCountry("Peak", "FR"))
       }
     </Screen>
   )

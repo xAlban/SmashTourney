@@ -1,8 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 
-
-
-
 const Tournament = types.model({
   id: types.optional(types.number, 0),
   city: types.optional(types.string, "NO CITY"),
@@ -23,6 +20,7 @@ export const TournamentsModel = types
   .actions(self => ({
     updateTournaments(tournaments) {
       self.tournaments = tournaments
+      console.log('UPDATED STORE TOURNAMENTS: ', self)
     },
     resetTournaments() {
       self.tournaments = []
