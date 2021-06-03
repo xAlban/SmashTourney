@@ -6,14 +6,21 @@ import { View } from "react-native"
 import { Text } from "../components"
 import { palette } from "../theme/palette"
 
-export function getTournamentByNameAndCountry(name: string, country: string) {
+export function getTournamentByNameAndCountry($name: string, $country: string) {
+  const testExternalQueryElem = `{
+      perPage: 10
+      filter: {
+        countryCode: "FR"
+        name: "Scarlet"
+      }
+  }`
   const GET_TOURNAMENT_BY_NAME_AND_COUNTRY = gql`
     {
       tournaments(query: {
         perPage: 10
         filter: {
           countryCode: "FR"
-          name: "Peak"
+          name: "Scarlet"
         }
       }) {
         nodes {
@@ -33,31 +40,36 @@ export function getTournamentByNameAndCountry(name: string, country: string) {
   }
   const tmp = []
   console.log("data: ", data.tournaments.nodes)
-  data.tournaments.nodes.map(tournament => {
-    tmp.push(
-      <View key={tournament.id} style={{
-        flex: 1,
-        backgroundColor: palette.lightergreen,
-        borderRadius: 10,
-        marginHorizontal: 30,
-        marginVertical: 10
-      }}>
-        <View style={{ flex: 1, padding: 10 }}>
-          <Text style={{ color: "black", flex: 1, fontWeight: 'bold', marginVertical: '1%' }}>
-            {tournament.name}
-          </Text>
-          <Text style={{ color: "black", flex: 1, marginVertical: '1%' }}>
-                    City: {tournament.city}
-          </Text>
+  if (data.tournaments.nodes) {
+    data.tournaments.nodes.map(tournament => {
+      tmp.push(
+        <View key={tournament.id} style={{
+          flex: 1,
+          backgroundColor: palette.lightergreen,
+          borderRadius: 10,
+          marginHorizontal: 30,
+          marginVertical: 10
+        }}>
+          <View style={{ flex: 1, padding: 10 }}>
+            <Text style={{ color: "black", flex: 1, fontWeight: 'bold', marginVertical: '1%' }}>
+              {tournament.name}
+            </Text>
+            <Text style={{ color: "black", flex: 1, marginVertical: '1%' }}>
+                      City: {tournament.city}
+            </Text>
+          </View>
+          <View style={{ flex: 4, backgroundColor: palette.darkgreen, height: 50, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
+            <Text style={{ color: palette.grey }}>
+            Image
+            </Text>
+          </View>
         </View>
-        <View style={{ flex: 4, backgroundColor: palette.darkgreen, height: 50, justifyContent: 'center', alignItems: 'center', borderBottomLeftRadius: 10, borderBottomRightRadius: 10 }}>
-          <Text style={{ color: palette.grey }}>
-          Image
-          </Text>
-        </View>
-      </View>
-    )
-  })
+      )
+    })
+  }else {
+    tmp.push(<View/>)
+  }
+  
   return [tmp, data.tournaments.nodes]
 
   // if (!loading) {
