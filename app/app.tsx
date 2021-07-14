@@ -23,16 +23,11 @@ import {
   useNavigationPersistence,
 } from "./navigation"
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
-import { ApolloClient } from 'apollo-client'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { HttpLink } from 'apollo-link-http'
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 import { enableScreens } from "react-native-screens"
-import { ApolloLink } from "apollo-boost"
 enableScreens()
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
@@ -64,37 +59,16 @@ const App: Component<{}> = () => {
   // with your own loading component if you wish.
   if (!rootStore) return null
 
-  // Create the client as outlined in the setup guide
-  const client = new ApolloClient({
-    link: new ApolloLink((operation, forward) => {
-      operation.setContext({
-        headers: {
-          authorization: 'Bearer ' + 'ef5e2a952f65837e693fe2fe217a252d',
-        }
-      })
-      return forward(operation)
-    }).concat(
-      new HttpLink({
-        uri: 'https://api.smash.gg/gql/alpha', // Server URL
-      })
-    ),
-    cache: new InMemoryCache(),
-  })
-
   // otherwise, we're ready to render the app
   return (
     <RootStoreProvider value={rootStore}>
-      <ApolloProvider client={client}>
-        <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
-
-          <RootNavigator
-            ref={navigationRef}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
-
-        </SafeAreaProvider>
-      </ApolloProvider>
+      <SafeAreaProvider initialSafeAreaInsets={initialWindowSafeAreaInsets}>
+        <RootNavigator
+          ref={navigationRef}
+          initialState={initialNavigationState}
+          onStateChange={onNavigationStateChange}
+        />
+      </SafeAreaProvider>
     </RootStoreProvider>
   )
 }

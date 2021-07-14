@@ -5,5 +5,12 @@ export interface User {
   name: string
 }
 
-export type GetUsersResult = { kind: "ok"; users: User[] } | GeneralApiProblem
-export type GetUserResult = { kind: "ok"; user: User } | GeneralApiProblem
+export interface Tournament {
+  id: number
+  name: string
+  countryCode: string
+  city: string
+  images: string[]
+}
+
+export type GetTournamentsWithName = { kind: "ok", tournaments: Tournament[] } | GeneralApiProblem

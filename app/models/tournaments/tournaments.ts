@@ -1,11 +1,16 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 
+const Image = types.model({
+  url: types.string
+})
+
 const Tournament = types.model({
   id: types.optional(types.number, 0),
-  city: types.optional(types.string, "NO CITY"),
-  countryCode: types.optional(types.string, "NO COUNTRYCODE"),
+  city: types.optional(types.maybeNull(types.string), "NO CITY"),
+  countryCode: types.optional(types.maybeNull(types.string), "NO COUNTRYCODE"),
   name: types.optional(types.string, "NO NAME"),
   __typename: types.optional(types.string, "NO TYPENAME"),
+  images: types.array(Image)
 })
 
 /**

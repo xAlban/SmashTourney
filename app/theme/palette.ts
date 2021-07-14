@@ -9,6 +9,6 @@ export const palette = {
   lightorange: '#FFDE8D',
   darkorange: '#DE7047',
   // Palette 2
-  darkred: '#34495E',
-  darkblue: '#DF4949'
+  darkblue: '#34495E',
+  darkred: '#DF4949'
 }

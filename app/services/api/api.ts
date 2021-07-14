@@ -17,6 +17,9 @@ export class Api {
    */
   config: ApiConfig
 
+  // API INSTANCE so we have the same in the app
+  static apiInstance: Api = null
+
   /**
    * Creates the api.
    *
@@ -24,6 +27,14 @@ export class Api {
    */
   constructor(config: ApiConfig = DEFAULT_API_CONFIG) {
     this.config = config
+  }
+
+  static getInstance(){
+    if(Api.apiInstance === null){
+      Api.apiInstance = new Api()
+      this.apiInstance.setup()
+    }
+    return this.apiInstance
   }
 
   /**
@@ -39,17 +50,44 @@ export class Api {
       baseURL: this.config.url,
       timeout: this.config.timeout,
       headers: {
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + '3fed2644863a16dff74a2acaf96702d7'
       },
     })
   }
 
   /**
-   * Gets a list of users.
+   * Gets a list of tournaments filtered by name.
    */
-  async getUsers(): Promise<Types.GetUsersResult> {
+  async getTournamentsWithName(name: string): Promise<Types.GetTournamentsWithName> {
     // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get(`/users`)
+    const response: ApiResponse<any> = await this.apisauce.post('', 
+    JSON.stringify({
+      query: `
+        query GET_TOURNAMENT_BY_NAME_AND_COUNTRY($name: String!) {
+          tournaments(query: {
+            perPage: 10
+            filter: {
+              name: $name
+            }
+          }) {
+            nodes {
+              id
+              name
+              countryCode
+              city
+              images {
+                url
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        name: name,
+      }
+    })
+    )
 
     // the typical ways to die when calling an api
     if (!response.ok) {
@@ -57,44 +95,22 @@ export class Api {
       if (problem) return problem
     }
 
-    const convertUser = raw => {
+    const convertTournament = raw => {
       return {
         id: raw.id,
         name: raw.name,
+        countryCode: raw.countryCode,
+        city: raw.city,
+        images: raw.images
       }
     }
+    // console.log("RESPONSE API: ", response.data.data.tournaments.nodes[0].images)
 
-    // transform the data into the format we are expecting
-    try {
-      const rawUsers = response.data
-      const resultUsers: Types.User[] = rawUsers.map(convertUser)
-      return { kind: "ok", users: resultUsers }
-    } catch {
-      return { kind: "bad-data" }
-    }
-  }
-
-  /**
-   * Gets a single user by ID
-   */
-
-  async getUser(id: string): Promise<Types.GetUserResult> {
-    // make the api call
-    const response: ApiResponse<any> = await this.apisauce.get(`/users/${id}`)
-
-    // the typical ways to die when calling an api
-    if (!response.ok) {
-      const problem = getGeneralApiProblem(response)
-      if (problem) return problem
-    }
-
-    // transform the data into the format we are expecting
-    try {
-      const resultUser: Types.User = {
-        id: response.data.id,
-        name: response.data.name,
-      }
-      return { kind: "ok", user: resultUser }
+     // transform the data into the format we are expecting
+     try {
+      const rawTournaments = response.data.data.tournaments.nodes
+      const resultTournaments: Types.Tournament[] = rawTournaments.map(convertTournament)
+      return { kind: "ok", tournaments: resultTournaments }
     } catch {
       return { kind: "bad-data" }
     }
