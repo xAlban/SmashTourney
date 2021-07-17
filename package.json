@@ -26,6 +26,7 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/masked-view": "0.1.5",
+    "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/native": "^5.1.5",
     "apisauce": "1.1.1",
     "graphql": "^15.0.0",
@@ -44,6 +45,7 @@
     "react-native-safe-area-view": "1.0.0",
     "react-native-screens": "^2.5.0",
     "react-native-splash-screen": "3.2.0",
+    "react-native-svg": "^12.1.1",
     "reactotron-mst": "^3.1.1",
     "reactotron-react-native": "^4.0.0-beta.1",
     "validate.js": "0.13.1"
@@ -82,6 +84,7 @@
     "postinstall-prepare": "1.0.1",
     "prettier": "1.19.1",
     "react-devtools-core": "4.5.0",
+    "react-native-svg-transformer": "^0.14.3",
     "react-powerplug": "1.0.0",
     "react-test-renderer": "16.9.0",
     "rimraf": "3.0.2",

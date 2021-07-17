@@ -1,33 +1,35 @@
-import React, { FunctionComponent as Component } from "react"
+import React from "react"
 import { observer } from "mobx-react-lite"
-import { ViewStyle, View } from "react-native"
-import { Screen, Text } from "../components"
+import { Image, ScrollView, ViewStyle } from "react-native"
+import { Screen, Text } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
-import { useStores, withEnvironment } from "../models"
-import { Api } from "../services/api"
-import { palette } from "../theme/palette"
-import { Image } from "react-native"
+// import { useStores } from "../../models"
+import { color, svg } from "../../theme"
+import { View } from "react-native"
+import { palette } from "../../theme/palette"
+import { Api } from "../../services/api"
+import { useStores } from "../../models"
 
 const ROOT: ViewStyle = {
-  backgroundColor: palette.darkblue,
-  minHeight: '100%'
+  backgroundColor: color.palette.darkblue,
+  flex: 1,
 }
 
-export const TestScreen: Component = observer(function TestScreen() {
+export const TournamentsScreen = observer(function TournamentsScreen() {
   // Pull in one of our MST stores
   const { tournamentsStore } = useStores()
 
   const api = Api.getInstance()
 
   React.useEffect(() => {
-    api.getTournamentsWithName("Magna").then(res => {
+    api.getTournamentsWithName("Scarlet").then(res => {
       console.log("RESULT IN TEST SCREEN !!!!!!", res)
       tournamentsStore.updateTournaments(res.tournaments)
     })
   }, [])
 
   return (
-    <Screen style={ROOT} preset="scroll">
+    <ScrollView style={ROOT}>
       {
         tournamentsStore.tournaments.map(tournament => (
           <View style={{
@@ -52,6 +54,6 @@ export const TestScreen: Component = observer(function TestScreen() {
           </View>
         ))
       }
-    </Screen>
+    </ScrollView>
   )
 })

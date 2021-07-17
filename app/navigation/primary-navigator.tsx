@@ -7,7 +7,13 @@
 import React from "react"
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
-import { WelcomeScreen, DemoScreen, TestScreen } from "../screens"
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { SettingsScreen, TestScreen, TournamentsScreen, UsersScreen } from "../screens"
+import { palette } from "../theme/palette"
+import { svg } from "../theme"
+import { View } from "react-native"
+import { Text } from "../components"
+import { translate } from "../i18n"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -28,16 +34,65 @@ export type PrimaryParamList = {
 // Documentation: https://github.com/software-mansion/react-native-screens/tree/master/native-stack
 const Stack = createNativeStackNavigator<PrimaryParamList>()
 
+const Tab = createBottomTabNavigator();
+
 export function PrimaryNavigator() {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        gestureEnabled: true,
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconComponent = <View/>
+          if (route.name === 'tournaments') {
+            iconComponent = <svg.TournamentIcon height="70%"/>
+          } else if (route.name === 'settings') {
+            iconComponent = <svg.Settings height="70%"/>
+          } else if (route.name === 'users') {
+            iconComponent = <svg.GroupUser height="70%"/>
+          }
+
+          // You can return any component that you like here!
+          return <View style={{flex: 1, justifyContent:"center", alignItems:"center"}}>
+            {iconComponent}
+            </View>
+        },
+        tabBarLabel: ({focused}) => {
+          return <Text style={{fontSize: 12, color: focused ? "white": "black"}}>{route.name}</Text>
+        }
+      })}
+      tabBarOptions={{
+        showLabel: false,
+        activeBackgroundColor: palette.selecteddarkred,
+        inactiveBackgroundColor: palette.darkred,
+        activeTintColor: "white",
+        inactiveTintColor: "black",
+        style:{
+          borderTopWidth: 0
+        }
       }}
+      
     >
-      <Stack.Screen name="test" component={TestScreen} />
-    </Stack.Navigator>
+      <Tab.Screen 
+        name="tournaments"
+        component={TournamentsScreen}
+        options={{
+          tabBarLabel: translate("tournaments")
+        }} 
+      />
+      <Tab.Screen 
+        name="users"
+        component={UsersScreen}
+        options={{
+          tabBarLabel: translate("players")
+        }} 
+      />
+      <Tab.Screen 
+        name="settings"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: translate("settings")
+        }} 
+      />
+    </Tab.Navigator>
   )
 }
 
