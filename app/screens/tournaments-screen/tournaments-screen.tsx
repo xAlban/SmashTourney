@@ -1,7 +1,7 @@
 import React from "react"
-import { observer } from "mobx-react-lite"
-import { Image, ScrollView, ViewStyle } from "react-native"
-import { Screen, Text } from "../../components"
+import { Observer, observer } from "mobx-react-lite"
+import { Dimensions, FlatList, Image, ScrollView, ViewStyle } from "react-native"
+import { Screen, SearchBar, Text } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, svg } from "../../theme"
@@ -9,11 +9,14 @@ import { View } from "react-native"
 import { palette } from "../../theme/palette"
 import { Api } from "../../services/api"
 import { useStores } from "../../models"
+import { translate } from "../../i18n"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.palette.darkblue,
   flex: 1,
 }
+
+const w = Dimensions.get("window").width
 
 export const TournamentsScreen = observer(function TournamentsScreen() {
   // Pull in one of our MST stores
@@ -29,6 +32,20 @@ export const TournamentsScreen = observer(function TournamentsScreen() {
   }, [])
 
   return (
+    <View style={ROOT}>
+    <View style={{position: "absolute", zIndex: 1, left: 10, top: 10, width: w - 20}}>
+      <SearchBar 
+        placeholder={translate("tournamentsScreen.searchTournament")}
+        onEndEditing={text => {
+          console.log("onEndEditing: ", text)
+          api.getTournamentsWithName(text).then(res => {
+            tournamentsStore.resetTournaments()
+            tournamentsStore.updateTournaments(res.tournaments)
+          })
+        }}
+      />
+    </View>
+    {/* NOT REFRESHING DYNAMICALLY NEED TO CHANGE */}
     <ScrollView style={ROOT}>
       {
         tournamentsStore.tournaments.map(tournament => (
@@ -55,5 +72,6 @@ export const TournamentsScreen = observer(function TournamentsScreen() {
         ))
       }
     </ScrollView>
+    </View>
   )
 })

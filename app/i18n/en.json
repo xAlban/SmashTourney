@@ -1,5 +1,8 @@
 {
     "tournaments": "Tournaments",
     "players": "Players",
-    "settings": "Settings"
+    "settings": "Settings",
+    "tournamentsScreen": {
+        "searchTournament": "Search Tournament"
+    }
 }
