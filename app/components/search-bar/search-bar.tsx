@@ -1,9 +1,10 @@
 import * as React from "react"
-import { TextInput, TextStyle, View, ViewStyle } from "react-native"
+import { TextInput, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
 import { color, typography } from "../../theme"
 import { Text } from "../"
 import { palette } from "../../theme/palette"
 import { translate } from "../../i18n"
+import { Icon } from "react-native-elements/dist/icons/Icon"
 
 const CONTAINER: ViewStyle = {
   justifyContent: "center",
@@ -11,7 +12,8 @@ const CONTAINER: ViewStyle = {
   backgroundColor: "#FFFFFFD0",
   borderColor: palette.darkred,
   borderWidth: 1,
-  borderRadius: 15
+  borderRadius: 25,
+  overflow: "hidden"
 }
 
 const TEXT: TextStyle = {
@@ -19,7 +21,7 @@ const TEXT: TextStyle = {
   fontSize: 16,
   color: color.primary,
   paddingHorizontal: 10,
-  backgroundColor: "#FFFFFF15",
+  backgroundColor: "#FFFFFF",
 }
 
 export interface SearchBarProps {
@@ -35,7 +37,7 @@ export interface SearchBarProps {
  * Describe your component here
  */
 export function SearchBar(props: SearchBarProps) {
-  const [currentText, setCurrentText] = React.useState<string>()
+  const [currentText, setCurrentText] = React.useState<string>("")
 
   const { style } = props
 
@@ -52,6 +54,19 @@ export function SearchBar(props: SearchBarProps) {
           props.onEndEditing(currentText)
         }}
       />
+      {
+        currentText !== "" && currentText !== null
+        ? <TouchableOpacity 
+            hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
+            style={{height: 20, width: 20, position:"absolute", right: 20}}
+            onPress={()=>{
+              setCurrentText("")
+            }}  
+          >
+          <Icon name="close" style={{height: 20, width: 20}}/>
+        </TouchableOpacity>
+        : <View/>
+      }
     </View>
   )
 }

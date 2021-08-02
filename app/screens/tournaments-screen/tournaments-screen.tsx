@@ -14,6 +14,7 @@ import { translate } from "../../i18n"
 const ROOT: ViewStyle = {
   backgroundColor: color.palette.darkblue,
   flex: 1,
+  paddingTop: 50
 }
 
 const w = Dimensions.get("window").width
@@ -32,7 +33,7 @@ export const TournamentsScreen = observer(function TournamentsScreen() {
   }, [])
 
   return (
-    <View style={ROOT}>
+    <View style={{flex: 1}}>
     <View style={{position: "absolute", zIndex: 1, left: 10, top: 10, width: w - 20}}>
       <SearchBar 
         placeholder={translate("tournamentsScreen.searchTournament")}
@@ -59,12 +60,17 @@ export const TournamentsScreen = observer(function TournamentsScreen() {
             backgroundColor: "white",
             overflow: "hidden"
           }} key={tournament.id}>
-            <Image
-            style={{flex: 1}}
-            source={{
-              uri: tournament.images[0].url,
-            }}
-            />
+            {
+              tournament.images[0]
+              ? <Image
+                style={{flex: 1}}
+                source={{
+                  uri: tournament.images[0].url,
+                }}
+              />
+              :
+              <View/>
+            }
             <Text style={{flex: 1}}>
               {tournament.name}
             </Text>

@@ -25,7 +25,7 @@ export const TournamentsModel = types
   .actions(self => ({
     updateTournaments(tournaments) {
       self.tournaments = tournaments
-      console.log('UPDATED STORE TOURNAMENTS: ', self)
+      console.log('UPDATED STORE TOURNAMENTS: ', self.tournaments)
     },
     resetTournaments() {
       self.tournaments = []
