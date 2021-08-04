@@ -13,4 +13,14 @@ export interface Tournament {
   images: string[]
 }
 
+export interface TournamentDetail {
+  id: number
+  name: string
+  countryCode: string
+  city: string
+  images: string[]
+  rules: string
+}
+
 export type GetTournamentsWithName = { kind: "ok", tournaments: Tournament[] } | GeneralApiProblem
+export type GetTournamentDetail = { kind: "ok", tournamentDetail: TournamentDetail } | GeneralApiProblem

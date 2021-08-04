@@ -8,7 +8,7 @@ import React from "react"
 
 import { createNativeStackNavigator } from "react-native-screens/native-stack"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { SettingsScreen, TestScreen, TournamentsScreen, UsersScreen } from "../screens"
+import { SettingsScreen, TestScreen, TournamentDetailScreen, TournamentsScreen, UsersScreen } from "../screens"
 import { palette } from "../theme/palette"
 import { svg } from "../theme"
 import { View } from "react-native"
@@ -32,7 +32,26 @@ export type PrimaryParamList = {
 }
 
 // Documentation: https://github.com/software-mansion/react-native-screens/tree/master/native-stack
-const Stack = createNativeStackNavigator<PrimaryParamList>()
+const TournamentsStack = createNativeStackNavigator<PrimaryParamList>()
+
+function TournamentsStackScreen() {
+  return (
+    <TournamentsStack.Navigator
+      screenOptions={{
+        headerShown: false
+      }}
+    >
+        <TournamentsStack.Screen 
+          name="tournaments"
+          component={TournamentsScreen}
+        />
+        <TournamentsStack.Screen 
+          name="tournamentDetail"
+          component={TournamentDetailScreen}
+        />
+    </TournamentsStack.Navigator>
+  )
+}
 
 const Tab = createBottomTabNavigator();
 
@@ -71,9 +90,10 @@ export function PrimaryNavigator() {
       }}
       
     >
+      
       <Tab.Screen 
         name="tournaments"
-        component={TournamentsScreen}
+        component={TournamentsStackScreen}
         options={{
           tabBarLabel: translate("tournaments")
         }} 

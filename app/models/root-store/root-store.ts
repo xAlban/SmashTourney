@@ -1,4 +1,5 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { TournamentDetailModel } from "../tournament-detail/tournament-detail"
 import { TournamentsModel } from "../tournaments/tournaments"
 
 /**
@@ -6,7 +7,8 @@ import { TournamentsModel } from "../tournaments/tournaments"
  */
 // prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
-    tournamentsStore: types.optional(TournamentsModel, {})
+    tournamentsStore: types.optional(TournamentsModel, {}),
+    tournamentDetailStore: types.optional(TournamentDetailModel, {})
 })
 
 /**

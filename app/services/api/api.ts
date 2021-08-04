@@ -115,4 +115,66 @@ export class Api {
       return { kind: "bad-data" }
     }
   }
+
+
+  /**
+   * Gets details of tournament filtered by ID
+   */
+   async getTournamentDetail(id: number): Promise<Types.GetTournamentDetail> {
+    // make the api call
+    const response: ApiResponse<any> = await this.apisauce.post('', 
+    JSON.stringify({
+      query: `
+        query GET_TOURNAMENT_DETAIL($id: ID!) {
+          tournaments(query: {
+            perPage: 1
+            filter: {
+              id: $id
+            }
+          }) {
+            nodes {
+              id
+              name
+              countryCode
+              city
+              images {
+                url
+              }
+              rules
+            }
+          }
+        }
+      `,
+      variables: {
+        id: id,
+      }
+    })
+    )
+
+    // the typical ways to die when calling an api
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    const convertTournament = raw => {
+      return {
+        id: raw.id,
+        name: raw.name,
+        countryCode: raw.countryCode,
+        city: raw.city,
+        images: raw.images,
+        rules: raw.rules
+      }
+    }
+
+     // transform the data into the format we are expecting
+     try {
+      const rawTournament = response.data.data.tournaments.nodes
+      const resultTournament: Types.TournamentDetail = rawTournament.map(convertTournament)
+      return { kind: "ok", tournamentDetail: resultTournament }
+    } catch {
+      return { kind: "bad-data" }
+    }
+  }
 }
