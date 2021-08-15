@@ -1,7 +1,7 @@
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 
 const Image = types.model({
-  url: types.optional(types.string, "")
+  url: types.optional(types.maybeNull(types.string), "")
 })
 
 /**
@@ -13,10 +13,11 @@ export const TournamentDetailModel = types
     id: types.optional(types.number, 0),
     city: types.optional(types.maybeNull(types.string), "NO CITY"),
     countryCode: types.optional(types.maybeNull(types.string), "NO COUNTRYCODE"),
-    name: types.optional(types.string, "NO NAME"),
-    __typename: types.optional(types.string, "NO TYPENAME"),
-    images: types.array(Image),
-    rules: types.optional(types.string, "NO RULES")
+    name: types.optional(types.maybeNull(types.string), "NO NAME"),
+    __typename: types.optional(types.maybeNull(types.string), "NO TYPENAME"),
+    images: types.optional(types.array(Image), [{url: ""}]),
+    rules: types.optional(types.maybeNull(types.string), "NO RULES"),
+    numAttendees: types.optional(types.number, 0),
   })
   .views(self => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions(self => ({
@@ -28,6 +29,7 @@ export const TournamentDetailModel = types
       self.__typename = tournament.__typename
       self.images = tournament.images
       self.rules = tournament.rules
+      self.numAttendees = tournament.numAttendees
       console.log('UPDATED DETAIL STORE: ', self)
     }
   })) // eslint-disable-line @typescript-eslint/no-unused-vars

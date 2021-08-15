@@ -4,5 +4,10 @@
     "settings": "Settings",
     "tournamentsScreen": {
         "searchTournament": "Search Tournament"
+    },
+    "tournamentDetailScreen": {
+        "attendees": "Attendees",
+        "checkBracket": "CHECK BRACKET",
+        "tournamentDescription": "Tournament Description"
     }
 }

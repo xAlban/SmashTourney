@@ -79,6 +79,7 @@ export class Api {
               images {
                 url
               }
+              numAttendees
             }
           }
         }

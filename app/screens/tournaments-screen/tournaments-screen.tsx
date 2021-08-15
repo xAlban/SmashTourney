@@ -27,7 +27,7 @@ export const TournamentsScreen = observer(function TournamentsScreen() {
   const api = Api.getInstance()
 
   React.useEffect(() => {
-    api.getTournamentsWithName("Scarlet").then(res => {
+    api.getTournamentsWithName("").then(res => {
       console.log("RESULT IN TEST SCREEN !!!!!!", res)
       tournamentsStore.updateTournaments(res.tournaments)
     })
@@ -73,7 +73,7 @@ export const TournamentsScreen = observer(function TournamentsScreen() {
               flexDirection: "row",
               borderColor: palette.darkred,
               borderWidth: 2,
-              borderRadius: 15,
+              borderRadius: 25,
               backgroundColor: "white",
               overflow: "hidden"
             }}>

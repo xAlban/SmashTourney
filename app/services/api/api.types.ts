@@ -20,6 +20,7 @@ export interface TournamentDetail {
   city: string
   images: string[]
   rules: string
+  numAttendees: number
 }
 
 export type GetTournamentsWithName = { kind: "ok", tournaments: Tournament[] } | GeneralApiProblem
