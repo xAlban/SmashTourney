@@ -86,7 +86,7 @@
     "patch-package": "6.2.1",
     "postinstall-prepare": "1.0.1",
     "prettier": "1.19.1",
-    "react-devtools-core": "4.5.0",
+    "react-devtools-core": "4.28.4",
     "react-powerplug": "1.0.0",
     "react-test-renderer": "16.9.0",
     "rimraf": "3.0.2",
